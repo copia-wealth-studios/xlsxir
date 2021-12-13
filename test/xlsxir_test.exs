@@ -138,4 +138,13 @@ defmodule XlsxirTest do
     assert [row1 | _] = get_list(pid)
     assert row1 == ["Filter rows", "Category", "Color", "Sales Amount"]
   end
+
+  test "parses inlineStr inside `t` element" do
+    {:ok, pid} = multi_extract("./test/test_data/inline-str.xlsx", 0)
+
+    assert get_list(pid) == [
+             ["foo", "bar"],
+             [123, "baz"]
+           ]
+  end
 end

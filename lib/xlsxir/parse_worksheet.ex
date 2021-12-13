@@ -83,8 +83,12 @@ defmodule Xlsxir.ParseWorksheet do
     %{state | value_type: :formula}
   end
 
-  def sax_event_handler({:startElement, _, 'v', _, _}, state, _, _) do
+  def sax_event_handler({:startElement, _, el, _, _}, state, _, _) when el in ['v', 't'] do
     %{state | value_type: :value}
+  end
+
+  def sax_event_handler({:endElement, _, el, _, _}, state, _, _) when el in ['f', 'v', 't'] do
+    %{state | value_type: nil}
   end
 
   def sax_event_handler({:characters, value}, state, _, _) do
