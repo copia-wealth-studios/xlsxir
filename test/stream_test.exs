@@ -21,4 +21,11 @@ defmodule StreamTest do
     # third run because reasons
     assert {:ok, _} = Task.yield(Task.async(fn -> s |> Stream.run() end), 2000)
   end
+
+  test "empty cells are filled with nil" do
+    s = Xlsxir.stream_list(path(), 9)
+    assert %Stream{} = s
+    assert 4 == s |> Enum.map(& &1) |> length
+    assert 8 == s |> Enum.map(& &1) |> List.first() |> length
+  end
 end
